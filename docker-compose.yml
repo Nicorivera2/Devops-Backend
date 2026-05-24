@@ -1,0 +1,85 @@
+version: "3.8"
+
+services:
+  # Base de Datos Centralizada (MySQL)
+  db-innovatech:
+    image: mysql:8.0
+    container_name: db-mysql-citt
+    restart: always
+    environment:
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - innovatech-net
+
+  # Microservicio de Ventas
+  ms-ventas:
+    build:
+      context: ./back-Ventas_SpringBoot/Springboot-API-REST
+      dockerfile: Dockerfile
+    container_name: ms-ventas-citt
+    depends_on:
+      - db-innovatech
+    ports:
+      - "8080:8080"
+    environment:
+      DB_ENDPOINT: 10.0.2.188
+      DB_PORT: 3306
+      DB_NAME: bd_despachos
+      DB_USERNAME: Despacho1 # o el usuario que corresponda
+      DB_PASSWORD: tupassword
+    volumes:
+      - ventas-logs:/app/logs
+    networks:
+      - innovatech-net
+    restart: always
+
+  # Microservicio de Despachos
+  ms-despachos:
+    build:
+      context: ./back-Despachos_SpringBoot/Springboot-API-REST-DESPACHO
+      dockerfile: Dockerfile
+    container_name: ms-despachos-citt
+    depends_on:
+      - db-innovatech
+    ports:
+      - "8081:8081"
+    environment:
+      - DB_ENDPOINT=db-innovatech
+      - DB_PORT=3306
+      - DB_NAME=${DB_NAME}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - despachos-logs:/app/logs
+    networks:
+      - innovatech-net
+    restart: always
+
+  # Frontend
+  frontend-innovatech:
+    build:
+      context: Desktop/front-despacho/
+      dockerfile: dockerfile-front
+    container_name: tiendafrontend
+    ports:
+      - "80:80"
+    networks:
+      - innovatech-net
+    restart: always
+
+# IE2: Definición de Volúmenes Nombrados
+volumes:
+  mysql-data: # Persistencia de la información de negocio
+  ventas-logs: # Persistencia de logs de ventas
+  despachos-logs: # Persistencia de logs de logística
+
+networks:
+  innovatech-net:
+    driver: bridge
