@@ -19,11 +19,11 @@ services:
       - innovatech-net
 
   # Microservicio de Ventas
-  ms-ventas:
+  venta-back:
     build:
       context: ./back-Ventas_SpringBoot/Springboot-API-REST
       dockerfile: Dockerfile
-    container_name: ms-ventas-citt
+    container_name: venta-back
     depends_on:
       - db-innovatech
     ports:
@@ -41,11 +41,11 @@ services:
     restart: always
 
   # Microservicio de Despachos
-  ms-despachos:
+  despacho-back:
     build:
       context: ./back-Despachos_SpringBoot/Springboot-API-REST-DESPACHO
       dockerfile: Dockerfile
-    container_name: ms-despachos-citt
+    container_name: despacho-back
     depends_on:
       - db-innovatech
     ports:
