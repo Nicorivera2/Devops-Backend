@@ -7,10 +7,10 @@ services:
     container_name: db-mysql-citt
     restart: always
     environment:
-      - MYSQL_DATABASE=${DB_NAME}
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - MYSQL_USER=${DB_USERNAME}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=bd_despachos
+      - MYSQL_ROOT_PASSWORD=tupassword
+      - MYSQL_USER=Despacho1
+      - MYSQL_PASSWORD=tupassword
     ports:
       - "3306:3306"
     volumes:
@@ -29,11 +29,11 @@ services:
     ports:
       - "8080:8080"
     environment:
-      DB_ENDPOINT: 10.0.2.188
-      DB_PORT: 3306
-      DB_NAME: bd_despachos
-      DB_USERNAME: Despacho1 # o el usuario que corresponda
-      DB_PASSWORD: tupassword
+      - DB_ENDPOINT=db-innovatech
+      - DB_PORT=3306
+      - DB_NAME=bd_despachos
+      - DB_USERNAME=Despacho1
+      - DB_PASSWORD=tupassword
     volumes:
       - ventas-logs:/app/logs
     networks:
@@ -53,9 +53,9 @@ services:
     environment:
       - DB_ENDPOINT=db-innovatech
       - DB_PORT=3306
-      - DB_NAME=${DB_NAME}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=bd_despachos
+      - DB_USERNAME=Despacho1
+      - DB_PASSWORD=tupassword
     volumes:
       - despachos-logs:/app/logs
     networks:

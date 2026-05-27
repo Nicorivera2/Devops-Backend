@@ -20,7 +20,7 @@ jobs:
           distribution: "temurin"
 
       - name: Build ms-venta
-        working-directory: ./API-REST-VENTA
+        working-directory: ./back-Ventas_SpringBoot/Springboot-API-REST
         run: mvn clean package -DskipTests
 
       - name: Login Docker Hub
@@ -30,7 +30,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        working-directory: ./API-REST-VENTA
+        working-directory: ./back-Ventas_SpringBoot/Springboot-API-REST
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/ms-venta:latest .
 
@@ -52,7 +52,7 @@ jobs:
           distribution: "temurin"
 
       - name: Build ms-despacho
-        working-directory: ./API-REST-DESPACHO
+        working-directory: ./back-Despachos_SpringBoot/Springboot-API-REST-DESPACHO
         run: mvn clean package -DskipTests
 
       - name: Login Docker Hub
@@ -62,7 +62,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        working-directory: ./API-REST-DESPACHO
+        working-directory: ./back-Despachos_SpringBoot/Springboot-API-REST-DESPACHO
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/ms-despacho:latest .
 
