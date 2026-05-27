@@ -62,18 +62,6 @@ services:
       - innovatech-net
     restart: always
 
-  # Frontend
-  frontend-innovatech:
-    build:
-      context: Desktop/front-despacho/
-      dockerfile: dockerfile-front
-    container_name: tiendafrontend
-    ports:
-      - "80:80"
-    networks:
-      - innovatech-net
-    restart: always
-
 # IE2: Definición de Volúmenes Nombrados
 volumes:
   mysql-data: # Persistencia de la información de negocio
