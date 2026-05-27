@@ -18,11 +18,9 @@ services:
     networks:
       - innovatech-net
 
-  # Microservicio de Ventas
+  # Microservicio de Ventas (Desde Docker Hub)
   venta-back:
-    build:
-      context: ./back-Ventas_SpringBoot/Springboot-API-REST
-      dockerfile: Dockerfile
+    image: nico22222/venta-back:latest # <--- Cambiado
     container_name: venta-back
     depends_on:
       - db-innovatech
@@ -40,11 +38,9 @@ services:
       - innovatech-net
     restart: always
 
-  # Microservicio de Despachos
+  # Microservicio de Despachos (Desde Docker Hub)
   despacho-back:
-    build:
-      context: ./back-Despachos_SpringBoot/Springboot-API-REST-DESPACHO
-      dockerfile: Dockerfile
+    image: nico22222/despacho-back:latest # <--- Cambiado
     container_name: despacho-back
     depends_on:
       - db-innovatech
@@ -62,11 +58,10 @@ services:
       - innovatech-net
     restart: always
 
-# IE2: Definición de Volúmenes Nombrados
 volumes:
-  mysql-data: # Persistencia de la información de negocio
-  ventas-logs: # Persistencia de logs de ventas
-  despachos-logs: # Persistencia de logs de logística
+  mysql-data:
+  ventas-logs:
+  despachos-logs:
 
 networks:
   innovatech-net:
