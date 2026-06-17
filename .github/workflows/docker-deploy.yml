@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - deploy
+    paths:
+      - "back-Despachos_SpringBoot/**"
+      - "back-Ventas_SpringBoot/**"
 
 jobs:
   build-ms-venta:
