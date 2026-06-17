@@ -1,16 +1,26 @@
 version: "3.8"
 
 services:
+  frontend:
+    build:
+      context: ./front_despacho
+      dockerfile: Dockerfile
+    container_name: innovatech_frontend
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    restart: always
   # Base de Datos Centralizada (MySQL)
   db-innovatech:
     image: mysql:8.0
     container_name: db-mysql-citt
     restart: always
     environment:
-      - MYSQL_DATABASE=${DB_NAME}
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - MYSQL_USER=${DB_USERNAME}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=bd_despachos
+      - MYSQL_ROOT_PASSWORD=tupassword
+      - MYSQL_USER=Despacho1
+      - MYSQL_PASSWORD=tupassword
     ports:
       - "3306:3306"
     volumes:
@@ -18,34 +28,30 @@ services:
     networks:
       - innovatech-net
 
-  # Microservicio de Ventas
-  ms-ventas:
-    build:
-      context: ./back-Ventas_SpringBoot/Springboot-API-REST
-      dockerfile: Dockerfile
-    container_name: ms-ventas-citt
+  # Microservicio de Ventas (Desde Docker Hub)
+  venta-back:
+    image: nico22222/venta-back:latest # <--- Cambiado
+    container_name: venta-back
     depends_on:
       - db-innovatech
     ports:
       - "8080:8080"
     environment:
-      DB_ENDPOINT: 10.0.2.188
-      DB_PORT: 3306
-      DB_NAME: bd_despachos
-      DB_USERNAME: Despacho1 # o el usuario que corresponda
-      DB_PASSWORD: tupassword
+      - DB_ENDPOINT=db-innovatech
+      - DB_PORT=3306
+      - DB_NAME=bd_despachos
+      - DB_USERNAME=Despacho1
+      - DB_PASSWORD=tupassword
     volumes:
       - ventas-logs:/app/logs
     networks:
       - innovatech-net
     restart: always
 
-  # Microservicio de Despachos
-  ms-despachos:
-    build:
-      context: ./back-Despachos_SpringBoot/Springboot-API-REST-DESPACHO
-      dockerfile: Dockerfile
-    container_name: ms-despachos-citt
+  # Microservicio de Despachos (Desde Docker Hub)
+  despacho-back:
+    image: nico22222/despacho-back:latest # <--- Cambiado
+    container_name: despacho-back
     depends_on:
       - db-innovatech
     ports:
@@ -53,20 +59,19 @@ services:
     environment:
       - DB_ENDPOINT=db-innovatech
       - DB_PORT=3306
-      - DB_NAME=${DB_NAME}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=bd_despachos
+      - DB_USERNAME=Despacho1
+      - DB_PASSWORD=tupassword
     volumes:
       - despachos-logs:/app/logs
     networks:
       - innovatech-net
     restart: always
 
-# IE2: Definición de Volúmenes Nombrados
 volumes:
-  mysql-data: # Persistencia de la información de negocio
-  ventas-logs: # Persistencia de logs de ventas
-  despachos-logs: # Persistencia de logs de logística
+  mysql-data:
+  ventas-logs:
+  despachos-logs:
 
 networks:
   innovatech-net:
