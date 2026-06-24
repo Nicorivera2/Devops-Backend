@@ -33,15 +33,14 @@ jobs:
           ECR_REPOSITORY: innovatech-frontend
           IMAGE_TAG: latest
         run: |
-          # Usamos comillas por el espacio en el nombre de la carpeta
-          cd "DEVOPS-BACKEND/front_despacho"
+          cd "front_despacho"
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Desplegar Frontend en EKS
         run: |
           aws eks update-kubeconfig --region us-east-1 --name innovatech-eks
-          cd "DEVOPS-BACKEND/front_despacho"
+          cd "front_despacho"
           kubectl apply -f k8s/
           kubectl rollout restart deployment/frontend-deployment
 
@@ -78,7 +77,7 @@ jobs:
           ECR_REPOSITORY: innovatech-backend-despachos
           IMAGE_TAG: latest
         run: |
-          cd "DEVOPS-BACKEND/back-Despachos_SpringBoot"
+          cd "back-Despachos_SpringBoot"
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
@@ -91,7 +90,7 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           aws eks update-kubeconfig --region us-east-1 --name innovatech-eks
-          cd "DEVOPS-BACKEND/back-Despachos_SpringBoot"
+          cd "back-Despachos_SpringBoot"
           envsubst < k8s/innovatech-secret.yaml > tmp.yaml && mv tmp.yaml k8s/innovatech-secret.yaml
           kubectl apply -f k8s/
           kubectl rollout restart deployment/despachos-deployment
@@ -129,7 +128,7 @@ jobs:
           ECR_REPOSITORY: innovatech-backend-ventas
           IMAGE_TAG: latest
         run: |
-          cd "DEVOPS-BACKEND/back-Ventas_SpringBoot"
+          cd "back-Ventas_SpringBoot"
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
@@ -142,7 +141,7 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           aws eks update-kubeconfig --region us-east-1 --name innovatech-eks
-          cd "DEVOPS-BACKEND/back-Ventas_SpringBoot"
+          cd "back-Ventas_SpringBoot"
           envsubst < k8s/innovatech-secret.yaml > tmp.yaml && mv tmp.yaml k8s/innovatech-secret.yaml
           kubectl apply -f k8s/
           kubectl rollout restart deployment/ventas-deployment
