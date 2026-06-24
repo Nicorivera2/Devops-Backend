@@ -74,7 +74,7 @@ function Footer() {
             <a href="#" className="hover:underline">
               ITPCARGO™
             </a>
-            . Todos los derechos reservados por nicolas y camilo.
+            . Todos los derechos reservados por nicolas rivera y camilo leiva.
           </span>
         </div>
       </div>
