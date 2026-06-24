@@ -77,7 +77,7 @@ jobs:
           ECR_REPOSITORY: innovatech-backend-despachos
           IMAGE_TAG: latest
         run: |
-          cd "back-Despachos_SpringBoot"
+          cd "back-Despachos_SpringBoot/Springboot-API-REST-DESPACHO"
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
@@ -90,7 +90,7 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           aws eks update-kubeconfig --region us-east-1 --name innovatech-eks
-          cd "back-Despachos_SpringBoot"
+          cd "back-Despachos_SpringBoot/Springboot-API-REST-DESPACHO"
           envsubst < k8s/innovatech-secret.yaml > tmp.yaml && mv tmp.yaml k8s/innovatech-secret.yaml
           kubectl apply -f k8s/
           kubectl rollout restart deployment/despachos-deployment
@@ -128,7 +128,7 @@ jobs:
           ECR_REPOSITORY: innovatech-backend-ventas
           IMAGE_TAG: latest
         run: |
-          cd "back-Ventas_SpringBoot"
+          cd "back-Ventas_SpringBoot/Springboot-API-REST"
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
@@ -141,7 +141,7 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           aws eks update-kubeconfig --region us-east-1 --name innovatech-eks
-          cd "back-Ventas_SpringBoot"
+          cd "back-Ventas_SpringBoot/Springboot-API-REST"
           envsubst < k8s/innovatech-secret.yaml > tmp.yaml && mv tmp.yaml k8s/innovatech-secret.yaml
           kubectl apply -f k8s/
           kubectl rollout restart deployment/ventas-deployment
