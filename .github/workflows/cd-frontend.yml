@@ -42,7 +42,7 @@ jobs:
           aws eks update-kubeconfig --region us-east-1 --name innovatech-eks
           cd "front_despacho"
           kubectl apply -f k8s/
-          kubectl rollout restart deployment/frontend-deployment
+          kubectl rollout restart deployment/front-deployment
 
   # ==========================================
   # 2. PIPELINE DESPACHOS (BACKEND)
