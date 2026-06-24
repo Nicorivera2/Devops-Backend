@@ -49,7 +49,7 @@ kind: Service
 metadata:
   name: front-service
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: front
   ports:
