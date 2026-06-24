@@ -14,6 +14,6 @@ COPY --chown=innovatech:innovatech --from=builder /app/target/*.jar app.jar
 
 USER innovatech
 
-EXPOSE 8081
+EXPOSE 8091
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
